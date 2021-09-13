@@ -1,10 +1,9 @@
 <h1 align=center> curlNexec <h1>
 
 ----
-
-<p align="center">
-<code>👋 Certainly useful , mainly for fun, rougly inspired by 0x00 <a href="https://0x00sec.org/t/super-stealthy-droppers/3715">article</a> </code>
-</p>
+<div align="center">
+    👋 Certainly useful , mainly for fun, rougly inspired by 0x00 <a href="https://0x00sec.org/t/super-stealthy-droppers/3715">article</a>
+</div>
  
 ----
 
