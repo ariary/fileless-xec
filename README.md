@@ -8,8 +8,8 @@
 
 `curlNexec` enable us to execute a remote binary on a local machine in one step
 
- - simple usage `curlNexec <binary_raw_url>`
- - execute binary with specified program name: `curlNexec -n /usr/sbin./sshd <binary_raw_url>`
+ - simple usage `curlNexec <binary_url>`
+ - execute binary with specified program name: `curlNexec -n /usr/sbin/sshd <binary_raw_url>`
  - detach program execution from `tty`: ` setsid curlNExec [...]` 
 
 ![demo](https://github.com/ariary/curlNexec/blob/main/img/curlNexec.gif)
