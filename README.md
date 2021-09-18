@@ -18,7 +18,7 @@
   <summary><b>Explanation</b></summary>
 We want to execute <code>writeNsleep</code> binary locate on a remote machine, locally. 
 
-We first start a python http server on remote
+We first start a python http server on remote.
  
 Locally we use <code>curlNexec</code> and impersonate the <code>/usr/sbin/sshd</code> name for the execution of the binary <code>writeNsleep</code>(for stealthiness & fun)
 
