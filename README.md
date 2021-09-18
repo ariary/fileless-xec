@@ -14,6 +14,14 @@
 
 ![demo](https://github.com/ariary/curlNexec/blob/main/img/curlNexec.gif)
 
+<details>
+  <summary><b>Explanation</b></summary>
+We want to execute `writeNsleep` binary locate on a remote machine, locally. 
+We first start a python http server on remote
+Locally we use `curlNexec` and impersonate the `/usr/sbin/sshd` name for the execution of the binary `writeNsleep`(for stealthiness & fun)
+
+</details>
+
 ## Stealthiness story 
 
 ### memfd_create
