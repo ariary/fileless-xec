@@ -10,6 +10,7 @@
 
  - simple usage `curlNexec <binary_url>`
  - execute binary with specified program name: `curlNexec -n /usr/sbin/sshd <binary_raw_url>`
+ - retrieve remote binary using http3 protocol and execute it: `curlNexec -http3 <binary_raw_url>`
  - detach program execution from `tty`: ` setsid curlNExec [...]` 
 
 ![demo](https://github.com/ariary/curlNexec/blob/main/img/curlNexec.gif)
@@ -36,7 +37,7 @@ Then we execute it using `fexecve` syscall (as it is currently not provided by `
 
 ### HTTP3/QUIC
 
-Enable it with `-Q` flag.
+Enable it with `-Q`/`http3`  flag.
 
 You can setup a light web rootfs server supporting http3 by running `go run ./test/http3/light-server.go -p <listening_port>` (This is http3 equivalent of ` python3 -m http.server <listening_port>`).
 
