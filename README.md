@@ -37,9 +37,9 @@ Then we execute it using `fexecve` syscall (as it is currently not provided by `
 
 ### HTTP3/QUIC
 
-Enable it with `-Q`/`http3`  flag.
+>Enable it with `-Q`/`http3`  flag.
 
-You can setup a light web rootfs server supporting http3 by running `go run ./test/http3/light-server.go -p <listening_port>` (This is http3 equivalent of ` python3 -m http.server <listening_port>`).
+>You can setup a light web rootfs server supporting http3 by running `go run ./test/http3/light-server.go -p <listening_port>` (This is http3 equivalent of ` python3 -m http.server <listening_port>`), use `test/http3/genkey.sh to generate cert and key.
 
 `QUIC` UDP aka `http3` is a new generation Internet protocol that speeds online web applications that are susceptible to delay, such as searching, video streaming etc., by reducing the round-trip time (RTT) needed to connect to a server.
 
