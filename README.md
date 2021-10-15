@@ -34,6 +34,19 @@ Then we execute it using `fexecve` syscall (as it is currently not provided by `
 > With `fexecve` , we could but we reference the program to run using a
 > file descriptor, instead of the full path.
 
+### HTTP3/QUIC
+
+Enable it with `-Q` flag.
+
+You can setup a light web rootfs server supporting http3 by running `go run ./test/http3/light-server.go -p <listening_port>` (This is http3 equivalent of ` python3 -m http.server <listening_port>`).
+
+`QUIC` UDP aka `http3` is a new generation Internet protocol that speeds online web applications that are susceptible to delay, such as searching, video streaming etc., by reducing the round-trip time (RTT) needed to connect to a server.
+
+Because QUIC uses proprietary encryption equivalent to TLS (this will change in the future with a standardized version), **3rd generation firewalls that provide application control and visibility encounter difficulties to control and monitor QUIC traffic**.
+
+If you actually use `curlNexec` as a dropper (***Only for testing purpose or with the authorization***), you likely to execute some type of malwares or other file that could be drop by packet analysis. Hence, with Quic enables you could **bypass packet analysis and GET a malware**.
+
+Also, in case firewall is only used for allowing/blocking traffic it could happen that **firewall rules forget the udp protocol making your requests go under the radars**
 
 ### other skill for stealthiness
 
