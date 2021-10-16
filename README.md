@@ -24,7 +24,11 @@ Locally we use <code>curlNexec</code> and impersonate the <code>/usr/sbin/sshd</
 
 </details>
 
-## Stealthiness story 
+## Stealthiness story
+
+* The binary file is not mapped into the host file system
+* The execution program name could be customizable
+* Bypass 3rd generation firewall could be done with http3 support
 
 ### memfd_create
 The remote binary file is stored locally using `memfd_create` syscall, which store it within a _memory disk_ which is not mapped into the file system (*ie* you can't find it using `ls`).
