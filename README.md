@@ -52,7 +52,7 @@ use <code>test/http3/genkey.sh</code> to generate cert and key.
 
 Because QUIC uses proprietary encryption equivalent to TLS (this will change in the future with a standardized version), **3rd generation firewalls that provide application control and visibility encounter difficulties to control and monitor QUIC traffic**.
 
-If you actually use `curlNexec` as a dropper (***Only for testing purpose or with the authorization***), you likely to execute some type of malwares or other file that could be drop by packet analysis. Hence, with Quic enables you could **bypass packet analysis and GET a malware**.
+If you actually use `curlNexec` as a dropper (***Only for testing purpose or with the authorization***), you likely want to execute some type of malwares or other file that could be drop by packet analysis. Hence, with Quic enables you could **bypass packet analysis and GET a malware**.
 
 Also, in case firewall is only used for allowing/blocking traffic it could happen that **firewall rules forget the udp protocol making your requests go under the radars**
 
