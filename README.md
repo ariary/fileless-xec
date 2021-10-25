@@ -42,8 +42,8 @@ Then we execute it using `fexecve` syscall (as it is currently not provided by `
 ### HTTP3/QUIC
 <table><tr><td>
 Enable it with <code>-Q</code>/<code>http3</code>  flag. <br>
-You can setup a light web rootfs server supporting http3 by running `go run ./test/http3/light-server.go -p <listening_port>` (This is http3 equivalent of ` python3 -m http.server <listening_port>`)<br>
-use `test/http3/genkey.sh` to generate cert and key.
+You can setup a light web rootfs server supporting http3 by running <code>go run ./test/http3/light-server.go -p LISTENING PORT</code> (This is http3 equivalent of <code>python3 -m http.server <listening_port></code>)<br>
+use <code>test/http3/genkey.sh</code> to generate cert and key.
 
  
  </td></tr></table>
