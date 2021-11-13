@@ -87,12 +87,12 @@ func GetBinaryRawHTTP3(url string) string {
 
 func main() {
 
-	//CMD CURLNEXEC
+	//CMD FILELESS-XEC
 	var name string
 	var http3 bool
 
-	var cmdCurlNexec = &cobra.Command{
-		Use:   "curlNexec [remote_url]",
+	var cmdFilelessxec = &cobra.Command{
+		Use:   "fileless-xec [remote_url]",
 		Short: "Execute remote binary locally",
 		Long:  `curl a remote binary file and execute it locally in one single step`,
 		Args:  cobra.MinimumNArgs(1),
@@ -128,8 +128,8 @@ func main() {
 	}
 
 	//flag handling
-	cmdCurlNexec.PersistentFlags().StringVarP(&name, "name", "n", "[kworker/u:0]", "running process name")
-	cmdCurlNexec.PersistentFlags().BoolVarP(&http3, "http3", "Q", false, "use of HTTP3 (QUIC) protocol")
+	cmdFilelessxec.PersistentFlags().StringVarP(&name, "name", "n", "[kworker/u:0]", "running process name")
+	cmdFilelessxec.PersistentFlags().BoolVarP(&http3, "http3", "Q", false, "use of HTTP3 (QUIC) protocol")
 
-	cmdCurlNexec.Execute()
+	cmdFilelessxec.Execute()
 }
