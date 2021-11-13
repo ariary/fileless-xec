@@ -3,7 +3,9 @@
 <div align="center">
 <code>👋 Certainly useful , mainly for fun, rougly inspired by 0x00 <a href="https://0x00sec.org/t/super-stealthy-droppers/3715">article</a></code>
 </div>
+<br>
 
+***Pentest used: fileless-xec is used on target machine to execute a binary file on attacker controlled machine***
 
 *Previously curlNExec, refactor on going*
 
