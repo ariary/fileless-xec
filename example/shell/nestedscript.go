@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -7,7 +8,7 @@ import (
 
 func main() {
 	//Shell content hardcoded
-	content := "echo 'This is my script';touch bad.py; echo 'End of script'"
+	content := "echo 'This is my script';touch bad.py;echo 'Create bad.py';"
 
 	//execute binary
 	cmd := exec.Command("/bin/sh", "-c", content)
@@ -20,5 +21,4 @@ func main() {
 
 	// Print the output
 	fmt.Println(string(stdout))
-	//fmt.Println(stdout, content)
 }
