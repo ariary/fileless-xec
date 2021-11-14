@@ -5,7 +5,7 @@
 </div>
 <br>
 
-***Pentest use:*** `fileless-xec` is used on target machine to execute a binary file on attacker controlled machine
+***Pentest use:*** `fileless-xec` is used on target machine to stealthy execute a binary file located on attacker controlled machine
 
 *Previously curlNExec, refactor on going*
 
