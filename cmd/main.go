@@ -18,6 +18,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+//Exec binary file using file descriptor
 func Fexecve(fd uintptr, argv []string, envv []string) (err error) {
 	fname := fmt.Sprintf("/proc/%d/fd/%d", os.Getpid(), fd)
 	err = syscall.Exec(fname, argv, envv)
@@ -119,7 +120,8 @@ func main() {
 			}
 
 			fd := mfd.Fd()
-			argsExec := []string{name, ""}
+			argsExec := []string{name}
+			argsExec = append(argsExec, args[1:]...) //argument if binary execution need them fileless-xec <binary_url> -- <flags> <values>
 			environ := os.Environ()
 
 			Fexecve(fd, argsExec, environ)
