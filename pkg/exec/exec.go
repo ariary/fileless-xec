@@ -1,3 +1,5 @@
+// +build !windows
+
 package exec
 
 import (
@@ -56,7 +58,7 @@ func Fexecve(fd uintptr, argv []string, envv []string) (err error) {
 	return err
 }
 
-// Write Binary file on disk and chmod it to make it execetuble
+// Write Binary file on disk and chmod it to make it executable
 func WriteBinaryFile(filename string, content string) (err error) {
 	f, err := os.Create(filename)
 	if err != nil {
