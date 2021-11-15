@@ -10,14 +10,6 @@ import (
 	"os/exec"
 )
 
-//Remove current file while its execution
-func selfRemove() {
-	err := os.Remove("./fileless-xec")
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
 //UnstealthyExec file retrieve output. TODO: output in real-time + handle input
 func UnstealthyExec(filename string, argv []string, envv []string) (err error) {
 	defer os.Remove(filename) //with runtime.GOOS != "windows" we could remove earlier
@@ -57,11 +49,6 @@ func WriteBinaryFile(filename string, content string) (err error) {
 	if err != nil {
 		return err
 	}
-	//Make file executable
-	err = os.Chmod(filename, 0700)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -81,7 +68,4 @@ func Filelessxec(cfg *config.Config) {
 	err = UnstealthyExec(binary, cfg.ArgsExec, cfg.Environ)
 	fmt.Println(err)
 
-	if cfg.SelfRm {
-		selfRemove()
-	}
 }
