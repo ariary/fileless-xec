@@ -30,14 +30,14 @@ Locally we use <code>fileless-xec</code> and impersonate the <code>/usr/sbin/ssh
 
 ### Other use cases
 
-* Execute binary with stdout/stdin
-* Execute binary with arguments
-* `fileless-xec` self remove
-* "Remote go": execute go binaries without having go installed locally
-* Bypass firewall with HTTP3
-* Execute a shell script
-* `fileless-xec` server mode
-* `fileless-xec` on windows
+* [Execute binary with stdout/stdin](https://github.com/ariary/fileless-xec/blob/main/usage.md#execute-binary-with-stdoutstdin)
+* [Execute binary with arguments](https://github.com/ariary/fileless-xec/blob/main/usage.md#execute-binary-with-arguments)
+* [`fileless-xec` self remove](https://github.com/ariary/fileless-xec/blob/main/usage.md#fileless-xec-self-remove)
+* ["Remote go": execute go binaries without having go installed locally](https://github.com/ariary/fileless-xec/blob/main/usage.md#remote-go-execute-go-binaries-without-having-go-installed-locally)
+* [Bypass firewall with HTTP3](https://github.com/ariary/fileless-xec/blob/main/usage.md#bypass-firewall-with-http3)
+* [Execute a shell script](https://github.com/ariary/fileless-xec/blob/main/usage.md#execute-a-shell-script)
+* [`fileless-xec` server mode](https://github.com/ariary/fileless-xec/blob/main/usage.md#fileless-xec-server-mode)
+* [`fileless-xec` on windows](https://github.com/ariary/fileless-xec/blob/main/usage.md#fileless-xec-on-windows)
 
 
 ## Stealthiness story
