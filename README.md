@@ -37,6 +37,7 @@ Locally we use <code>fileless-xec</code> and impersonate the <code>/usr/sbin/ssh
 * [Bypass firewall with HTTP3](https://github.com/ariary/fileless-xec/blob/main/usage.md#bypass-firewall-with-http3)
 * [Execute a shell script](https://github.com/ariary/fileless-xec/blob/main/usage.md#execute-a-shell-script)
 * [`fileless-xec` server mode](https://github.com/ariary/fileless-xec/blob/main/usage.md#fileless-xec-server-mode)
+  * [RAT (Remote Access Trojan) scenario](https://github.com/ariary/fileless-xec/blob/main/usage.md#rat-remote-access-trojan-scenario)
 * [`fileless-xec` on windows](https://github.com/ariary/fileless-xec/blob/main/usage.md#fileless-xec-on-windows)
 
 
