@@ -3,9 +3,9 @@
 package execwindows
 
 import (
+	"bufio"
 	"fileless-xec/pkg/config"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 )
@@ -16,7 +16,13 @@ func UnstealthyExec(filename string, argv []string, envv []string) (err error) {
 	cmd := exec.Command("./" + filename)
 	cmd.Args = argv
 	cmd.Env = envv
+
 	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		return err
+	}
+
+	stderr, err := cmd.StderrPipe()
 	if err != nil {
 		return err
 	}
@@ -25,16 +31,19 @@ func UnstealthyExec(filename string, argv []string, envv []string) (err error) {
 		return err
 	}
 
-	data, err := ioutil.ReadAll(stdout)
-
-	if err != nil {
-		return err
+	scannerOut := bufio.NewScanner(stdout)
+	for scannerOut.Scan() {
+		fmt.Println(scannerOut.Text())
 	}
+
+	scannerErr := bufio.NewScanner(stderr)
+	for scannerErr.Scan() {
+		fmt.Println(scannerErr.Text())
+	}
+
 	if err := cmd.Wait(); err != nil {
 		return err
 	}
-
-	fmt.Println(string(data))
 	return err
 }
 

@@ -3,14 +3,17 @@
 package exec
 
 import (
+	"bytes"
 	"fileless-xec/pkg/config"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"os/exec"
+	"os/signal"
 	"runtime"
 	"syscall"
 
+	"github.com/creack/pty"
 	"github.com/justincormack/go-memfd"
 )
 
@@ -28,25 +31,34 @@ func UnstealthyExec(filename string, argv []string, envv []string) (err error) {
 	cmd := exec.Command("./" + filename)
 	cmd.Args = argv
 	cmd.Env = envv
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		return err
-	}
+	// Start the command with a pty.
+	ptmx, _ := pty.Start(cmd)
 
-	if err := cmd.Start(); err != nil {
-		return err
-	}
+	// Make sure to close the pty at the end.
+	defer func() { _ = ptmx.Close() }() // Best effort.
 
-	data, err := ioutil.ReadAll(stdout)
+	// Handle pty size.
+	ch := make(chan os.Signal, 1)
+	signal.Notify(ch, syscall.SIGWINCH)
+	go func() {
+		for range ch {
+			pty.InheritSize(os.Stdin, ptmx)
+		}
+	}()
+	ch <- syscall.SIGWINCH                        // Initial resize.
+	defer func() { signal.Stop(ch); close(ch) }() // Cleanup signals when done.
 
-	if err != nil {
-		return err
-	}
-	if err := cmd.Wait(); err != nil {
-		return err
-	}
+	// Copy stdin to the pty and the pty to stdout.
+	// NOTE: The goroutine will keep reading until the next keystroke before returning.
+	var outBuffer bytes.Buffer
+	var inBuffer bytes.Buffer
 
-	fmt.Println(string(data))
+	mwOut := io.MultiWriter(os.Stdout, &outBuffer)
+
+	in := io.TeeReader(os.Stdin, &inBuffer)
+	go func() { _, _ = io.Copy(ptmx, in) }()
+	_, _ = io.Copy(mwOut, ptmx)
+
 	return err
 }
 
@@ -95,11 +107,9 @@ func PrepareStealthExec(content string) (mfd *memfd.Memfd) {
 
 //Exec a file witth filess-xec
 func Filelessxec(cfg *config.Config) {
-	if cfg.Unstealth || runtime.GOOS == "windows" { //Unstealth mode
+	if cfg.Unstealth { //Unstealth mode
 		binary := "dummy"
-		if runtime.GOOS == "windows" {
-			binary += ".exe"
-		}
+
 		//write binary file locally
 		err := WriteBinaryFile(binary, cfg.BinaryContent)
 		if err != nil {
