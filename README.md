@@ -93,4 +93,4 @@ You could still be detected with:
 $ lsof | grep memfd
 ```
 
-Or also `[opensnoop](https://github.com/brendangregg/perf-tools/blob/master/opensnoop)` (but not by `[execsnoop](https://github.com/brendangregg/perf-tools/blob/master/execsnoop)`)
+Or also [`opensnoop`](https://github.com/brendangregg/perf-tools/blob/master/opensnoop) (but not by [`execsnoop`](https://github.com/brendangregg/perf-tools/blob/master/execsnoop))
