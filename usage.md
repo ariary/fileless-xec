@@ -42,7 +42,7 @@ fileless-xec --self-remove [binary_url]
 
 For several reasons, it is sometimes stealther to use icmp protocol (not monitored, not blocked, etc ...). In this case, fileless-xec could be used as an ICMP server to retrieve binary content before execute it. 
 
-*Product placement: To send the binary content you should use [`QueenSono`](https://github.com/ariary/QueenSono) (icmp tools for data transfer/exfiltration)
+*Product placement: To send the binary content you should use [`QueenSono`](https://github.com/ariary/QueenSono) (icmp tools for data transfer/exfiltration)*
 
 On target machine, launch the icmp server:
 ```
