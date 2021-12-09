@@ -96,3 +96,6 @@ $ lsof | grep memfd
 Or also [`opensnoop`](https://github.com/brendangregg/perf-tools/blob/master/opensnoop) (but not by [`execsnoop`](https://github.com/brendangregg/perf-tools/blob/master/execsnoop))
 
 Or seccomp profile auditing `execve` syscall (but it is very overwhelming as a `sleep` command also use execve)
+
+
+<div align="center"><img src="https://user-images.githubusercontent.com/14805903/145359418-394e0133-605d-498f-8f9c-8ecdd0dba8ac.png"></div>
