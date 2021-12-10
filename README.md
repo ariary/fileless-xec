@@ -1,11 +1,15 @@
 <h1 align=center> ➲ fileless-xec 🦜</h1>
 
+<div align="center"><img src="https://github.com/ariary/fileless-xec/blob/main/img/fileless-small.png"></div>
+
 <div align="center">
 <code>👋 Certainly useful , mainly for fun, rougly inspired by 0x00 <a href="https://0x00sec.org/t/super-stealthy-droppers/3715">article</a></code>
 </div>
 <br>
 
 ***Pentest use:*** `fileless-xec` is used on target machine to stealthy execute a binary file located on attacker machine
+
+
 
 ## ➲ Short story
 
@@ -96,6 +100,3 @@ $ lsof | grep memfd
 Or also [`opensnoop`](https://github.com/brendangregg/perf-tools/blob/master/opensnoop) (but not by [`execsnoop`](https://github.com/brendangregg/perf-tools/blob/master/execsnoop))
 
 Or seccomp profile auditing `execve` syscall (but it is very overwhelming as a `sleep` command also use execve)
-
-
-<div align="center"><img src="https://user-images.githubusercontent.com/14805903/145359418-394e0133-605d-498f-8f9c-8ecdd0dba8ac.png"></div>
