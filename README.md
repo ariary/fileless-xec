@@ -59,7 +59,7 @@ The remote binary file is stored locally using `memfd_create` syscall, which sto
 ### fexecve
 Then we execute it using `fexecve` syscall (as it is currently not provided by `syscall` golang library we implem it). 
 
-> With `fexecve` , we could but we reference the program to run using a
+> With `fexecve` we could exec a program, but we reference the program to run using a
 > file descriptor, instead of the full path.
 
 ### HTTP3/QUIC
