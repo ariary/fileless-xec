@@ -28,7 +28,7 @@
 We want to locally execute <code>writeNsleep</code> binary located on a remote machine. 
 
 We first start a python http server on remote.
-Locally we use <code>fileless-xec</code> and impersonate the <code>/usr/sbin/sshd</code> name for the execution of the binary <code>writeNsleep</code>(for stealthiness & fun). Once writeNsleep started fileless-xec will delete itself (<code>--self-remove</code>)
+Locally we use <code>fileless-xec</code> and impersonate the <code>/usr/sbin/sshd</code> name for the execution of the binary <code>writeNsleep</code>(for stealthiness & fun). Once writeNsleep start fileless-xec will delete itself (<code>--self-remove</code>)
 
 </details>
 
