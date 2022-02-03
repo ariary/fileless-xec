@@ -3,10 +3,10 @@
 package main
 
 import (
-	"fileless-xec/pkg/config"
-	"fileless-xec/pkg/execwindows"
-	"fileless-xec/pkg/serverwindows"
-	"fileless-xec/pkg/transport"
+	"github.com/ariary/fileless-xec/pkg/config"
+	"github.com/ariary/fileless-xec/pkg/execwindows"
+	"github.com/ariary/fileless-xec/pkg/serverwindows"
+	"github.com/ariary/fileless-xec/pkg/transport"
 	"log"
 	"net/http"
 	"os"
