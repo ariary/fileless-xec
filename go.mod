@@ -1,4 +1,5 @@
-module github.com/ariary/fileless-xec/pkg/
+module github.com/ariary/fileless-xec
+
 go 1.16
 
 require (
