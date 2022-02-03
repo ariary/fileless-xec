@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fileless-xec/pkg/config"
-	"fileless-xec/pkg/exec"
-	"fileless-xec/pkg/server"
-	"fileless-xec/pkg/transport"
+	"github.com/ariary/fileless-xec/pkg/config"
+	"github.com/ariary/fileless-xec/pkg/exec"
+	"github.com/ariary/fileless-xec/pkg/server"
+	"github.com/ariary/fileless-xec/pkg/transport"
 	"log"
 	"net/http"
 	"os"
