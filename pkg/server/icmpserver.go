@@ -2,9 +2,10 @@ package server
 
 import (
 	b64 "encoding/base64"
-	"fileless-xec/pkg/config"
-	"fileless-xec/pkg/exec"
 	"log"
+
+	"github.com/ariary/fileless-xec/pkg/config"
+	"github.com/ariary/fileless-xec/pkg/exec"
 
 	"github.com/ariary/QueenSono/pkg/icmp"
 )

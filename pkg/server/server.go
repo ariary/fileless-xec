@@ -2,11 +2,12 @@ package server
 
 import (
 	"bytes"
-	"fileless-xec/pkg/config"
-	"fileless-xec/pkg/exec"
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/ariary/fileless-xec/pkg/config"
+	"github.com/ariary/fileless-xec/pkg/exec"
 )
 
 //Upload binary file <= 32Mb and return byte content

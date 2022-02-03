@@ -1,13 +1,15 @@
+//go:build windows
 // +build windows
 
 package execwindows
 
 import (
 	"bufio"
-	"fileless-xec/pkg/config"
 	"fmt"
 	"os"
 	"os/exec"
+
+	"github.com/ariary/fileless-xec/pkg/config"
 )
 
 //UnstealthyExec file retrieve output. TODO: output in real-time + handle input

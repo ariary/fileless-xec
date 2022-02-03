@@ -1,14 +1,16 @@
+//go:build windows
 // +build windows
 
 package serverwindows
 
 import (
 	"bytes"
-	"fileless-xec/pkg/config"
-	"fileless-xec/pkg/execwindows"
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/ariary/fileless-xec/pkg/config"
+	"github.com/ariary/fileless-xec/pkg/execwindows"
 )
 
 //Upload binary file <= 32Mb and return byte content

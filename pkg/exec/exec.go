@@ -1,10 +1,10 @@
+//go:build !windows
 // +build !windows
 
 package exec
 
 import (
 	"bytes"
-	"fileless-xec/pkg/config"
 	"fmt"
 	"io"
 	"os"
@@ -12,6 +12,8 @@ import (
 	"os/signal"
 	"runtime"
 	"syscall"
+
+	"github.com/ariary/fileless-xec/pkg/config"
 
 	"github.com/creack/pty"
 	"github.com/justincormack/go-memfd"
