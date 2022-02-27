@@ -7,4 +7,5 @@ type Config struct {
 	ArgsExec      []string
 	SelfRm        bool
 	Environ       []string
+	Daemon        bool
 }

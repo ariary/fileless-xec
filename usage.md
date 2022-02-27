@@ -22,7 +22,7 @@ fileless-xec [binary_url]
 
 ## Execute binary with stdout/stdin
 
-`fileless-xec` is able to execute binaries with stdout and stdin. There isn't any special configuration or flag to make it works
+`fileless-xec` is able to execute binaries with stdout and stdin. There isn't any special configuration or flag to make it works. (also work with `--setsid`)
 
 ## Execute binary with arguments
 

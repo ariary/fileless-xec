@@ -27,7 +27,7 @@ func selfRemove() {
 	}
 }
 
-//UnstealthyExec file retrieve output. TODO: output in real-time + handle input
+//UnstealthyExec file retrieve output
 func UnstealthyExec(filename string, argv []string, envv []string) (err error) {
 	defer os.Remove(filename) //with runtime.GOOS != "windows" we could remove earlier
 	cmd := exec.Command("./" + filename)
@@ -69,6 +69,23 @@ func UnstealthyExec(filename string, argv []string, envv []string) (err error) {
 func Fexecve(fd uintptr, argv []string, envv []string) (err error) {
 	fname := fmt.Sprintf("/proc/%d/fd/%d", os.Getpid(), fd)
 	err = syscall.Exec(fname, argv, envv)
+
+	return err
+}
+
+//FexecveDaemon: Exec binary file using file descriptor. The program is a daemon (setsid).
+//No input, or output
+func FexecveDaemon(fd uintptr, argv []string, envv []string) (err error) {
+	fname := fmt.Sprintf("/proc/%d/fd/%d", os.Getpid(), fd)
+	var sysProcAttr = syscall.SysProcAttr{Setsid: true}
+	var procAttr = syscall.ProcAttr{Env: envv, Sys: &sysProcAttr, Files: []uintptr{0, 1, 2}} //Files: stdin,stderr,stout apply to the same tty than filelessxec
+	//to still have stdout and stdin
+	_, err = syscall.ForkExec(fname, argv, &procAttr)
+	//don't wait
+	// if err == nil {
+	// 	_, err = syscall.Wait4(pid, nil, 0, nil) //do we have to wait?
+	// }
+
 	return err
 }
 
@@ -133,7 +150,11 @@ func Filelessxec(cfg *config.Config) {
 		if cfg.SelfRm && runtime.GOOS != "windows" {
 			selfRemove()
 		}
+		if cfg.Daemon {
+			FexecveDaemon(fd, cfg.ArgsExec, cfg.Environ)
+		} else {
+			Fexecve(fd, cfg.ArgsExec, cfg.Environ) //all line after that won't be executed due to syscall execve
+		}
 
-		Fexecve(fd, cfg.ArgsExec, cfg.Environ) //all line after that won't be executed due to syscall execve
 	}
 }

