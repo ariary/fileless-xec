@@ -9,11 +9,11 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/lucas-clemente/quic-go"
-	"github.com/lucas-clemente/quic-go/http3"
+	"github.com/quic-go/quic-go"
+	"github.com/quic-go/quic-go/http3"
 )
 
-//Retrieve Binary from Remote using http protocol
+// Retrieve Binary from Remote using http protocol
 func GetBinaryRaw(url string) string {
 
 	resp, err := http.Get(url)
@@ -33,8 +33,8 @@ func GetBinaryRaw(url string) string {
 	return string(body)
 }
 
-//Retrieve Binary from Remote using http3 protocol (Quic)
-//Put ca.pem in current directory
+// Retrieve Binary from Remote using http3 protocol (Quic)
+// Put ca.pem in current directory
 func GetBinaryRawHTTP3(url string) string {
 
 	var qconf quic.Config

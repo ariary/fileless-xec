@@ -57,7 +57,7 @@ Locally we use <code>fileless-xec</code> and impersonate the <code>/usr/sbin/ssh
 The remote binary file is stored locally using `memfd_create` syscall, which store it within a _memory disk_ which is not mapped into the file system (*ie* you can't find it using `ls`).
 
 ### fexecve
-Then we execute it using `fexecve` syscall (as it is currently not provided by `syscall` golang library we implem it). 
+Then we execute it using `fexecve` syscall (as it is currently not provided by `syscall` golang library we implement it). 
 
 > With `fexecve` we could exec a program, but we reference the program to run using a
 > file descriptor, instead of the full path.
