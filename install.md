@@ -8,6 +8,8 @@ cd fileless-xec
 ./target-build.sh # enable to build it and specify target OS/ARCH
 ```
 
+<details><summary>Alternative (makefile, release, go)</summary>
+
 #### using makefile
 ```shell
 make before.build
@@ -41,3 +43,4 @@ Install `fileless-xec`
 ```shell
 go install github.com/ariary/fileless-xec/cmd/fileless-xec
 ```
+</details>
